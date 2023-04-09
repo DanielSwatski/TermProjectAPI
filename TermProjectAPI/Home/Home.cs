@@ -5,6 +5,7 @@ namespace TermProjectAPI
     public class Home
     {
         public String Homeaddress { get; set; }
+        public String State { get; set; }
         public String SellerUsername { get; set; }
         public String PropertyType { get; set; }
         public int HomeSize { get; set; }
@@ -24,9 +25,10 @@ namespace TermProjectAPI
         {
         }
 
-        public Home(String Homeaddress, String SellersUsername, String PropertyType, int HomeSize, int BedRoomNumber, int BathRoomNumber, String Amentities, String Utilities, int Yearbuilt, String Garage, String Description, int AskingPrice, String DateListed, String Photos)
+        public Home(String Homeaddress, String State, String SellersUsername, String PropertyType, int HomeSize, int BedRoomNumber, int BathRoomNumber, String Amentities, String Utilities, int Yearbuilt, String Garage, String Description, int AskingPrice, String DateListed, String Photos)
         {
             this.Homeaddress = Homeaddress;
+            this.State = State;
             this.SellerUsername = SellersUsername;
             this.PropertyType = PropertyType;
             this.HomeSize = HomeSize;
