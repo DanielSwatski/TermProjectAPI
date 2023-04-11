@@ -11,7 +11,7 @@ namespace TermProjectAPI.Controllers
 {
     [Route("HomesAPI/")]
     [Produces("application/json")]
-    public class ValuesController : ControllerBase
+    public class HomesController : ControllerBase
     {
 
         public List<Home> createList(DataSet ds)
@@ -24,20 +24,22 @@ namespace TermProjectAPI.Controllers
                 Home addable = new Home();
                 addable.Homeaddress = row[0].ToString();
                 addable.State = row[1].ToString();
-                addable.SellerUsername = row[2].ToString();
-                addable.PropertyType = row[3].ToString();
+                addable.ZipCode = int.Parse(row[2].ToString());
+                addable.SellerUsername = row[3].ToString();
+                addable.PropertyType = row[4].ToString();
 
-                addable.HomeSize = int.Parse(row[4].ToString());
-                addable.BedRoomNumber = int.Parse(row[5].ToString());
-                addable.BathRoomNumber = int.Parse(row[6].ToString());
-                addable.Amentities = row[7].ToString();
-                addable.Utilities = row[8].ToString();
-                addable.Yearbuilt = int.Parse(row[9].ToString());
-                addable.Garage = row[10].ToString();
-                addable.Description = row[11].ToString();
-                addable.AskingPrice = int.Parse(row[12].ToString());
-                addable.DateListed = row[13].ToString();
-                addable.Photos = row[14].ToString();
+                addable.HomeSize = int.Parse(row[5].ToString());
+                addable.BedRoomNumber = int.Parse(row[6].ToString());
+                addable.BathRoomNumber = int.Parse(row[7].ToString());
+                addable.Amenities = row[8].ToString();
+                addable.HVAC = row[9].ToString();
+                addable.Utilities = row[10].ToString();
+                addable.Yearbuilt = int.Parse(row[11].ToString());
+                addable.Garage = row[12].ToString();
+                addable.Description = row[14].ToString();
+                addable.AskingPrice = int.Parse(row[14].ToString());
+                addable.DateListed = row[15].ToString();
+                addable.Photos = row[16].ToString();
 
                 returnable.Add(addable);
 
@@ -45,6 +47,35 @@ namespace TermProjectAPI.Controllers
 
 
             return returnable;
+        }
+
+
+        [HttpGet("GetByPriceAmenities/{Min}/{Max}/{Amenities}")]
+        public List<Home> GetPriceAmenitites(String Location, int Min, int Max, String Amenities)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "TP_PRICEAMENITIES";
+
+            SqlParameter input = new SqlParameter("@price", Min);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.Int;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@max", Max);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.Int;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@Amenities", Amenities);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.VarChar;
+            objCommand.Parameters.Add(input);
+
+            return createList(objDB.GetDataSet(objCommand));
+
         }
 
 
@@ -144,6 +175,71 @@ namespace TermProjectAPI.Controllers
 
             return createList(objDB.GetDataSet(objCommand));
         }
+
+
+        [HttpGet("GetByLocationAmenities/{Location}/{Amenities}")]
+        public List<Home> GetLocationAmenities(String Location, String Amenities)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "TP_LOCATIONAMENITIES";
+
+            SqlParameter input = new SqlParameter("@state", Location);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.VarChar;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@amenities", Amenities);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.VarChar;
+            objCommand.Parameters.Add(input);
+
+
+            return createList(objDB.GetDataSet(objCommand));
+        }
+
+
+        [HttpGet("GetByLocationPriceRoomsAmenities/{Location}/{Min}/{Max}/{Rooms}/{Amenities}")]
+        public List<Home> GetLocationPriceRoomsAmenities(String Location, int Min, int Max, int Rooms, String Amenities)
+        {
+            DBConnect objDB = new DBConnect();
+            SqlCommand objCommand = new SqlCommand();
+
+            objCommand.CommandType = CommandType.StoredProcedure;
+            objCommand.CommandText = "TP_LOCATIONPRICEROOMSAMENITIES";
+
+
+            SqlParameter input = new SqlParameter("@state", Location);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.VarChar;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@min", Min);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.Int;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@max", Max);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.Int;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@rooms", Rooms);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.Int;
+            objCommand.Parameters.Add(input);
+
+            input = new SqlParameter("@Amenities", Amenities);
+            input.Direction = ParameterDirection.Input;
+            input.SqlDbType = SqlDbType.VarChar;
+            objCommand.Parameters.Add(input);
+
+
+            return createList(objDB.GetDataSet(objCommand));
+        }
+
 
 
         [HttpGet]

@@ -12,7 +12,7 @@ namespace TermProjectAPI
         public int HomeSize { get; set; }
         public int BedRoomNumber { get; set; }
         public int BathRoomNumber { get; set; }
-        public String Amentities { get; set; }
+        public String Amenities { get; set; }
         public String HVAC { get; set; }
         public String Utilities { get; set; }
         public int Yearbuilt { get; set; }
